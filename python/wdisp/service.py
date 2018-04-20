@@ -1,5 +1,4 @@
 
-import aiohttp.web
 import asyncio
 import collections
 import base64
@@ -8,8 +7,6 @@ import numpy as np
 import PIL.Image
 import io
 
-
-ImageNotFound = aiohttp.web.HTTPNotFound()
 
 
 def _make_preview(image, vmin, vmax, preview_size = (128, 128)):
@@ -122,8 +119,6 @@ class ImageDB(object):
 
     def get_image(self, name):
         im = self.images.get(name)
-        if not im:
-            raise ImageNotFound
         return im
 
     def _next_id(self):

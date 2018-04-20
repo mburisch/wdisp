@@ -11,23 +11,30 @@ import argparse
 import config
 from service import Image, ImageValues, ImageDB, Messages, MessageStream
 
+ImageNotFound = aiohttp.web.HTTPNotFound()
 
 _db = None
 
 routes = aiohttp.web.RouteTableDef()
 
+def get_image(name):
+    im = _db.get_image(name)
+    if not im:
+        raise ImageNotFound(reason = "Image not available")
+    return im
+
 
 @routes.get("/api/preview/{name}")
 def preview(request):
     name = request.match_info["name"]
-    im = _db.get_image(name)
+    im = get_image(name)
     return aiohttp.web.Response(body = im.preview, content_type = "image/jpeg")
 
 
 @routes.get("/api/image/{name}")
 def image(request):
     name = request.match_info["name"]
-    im = _db.get_image(name)
+    im = get_image(name)
     return aiohttp.web.Response(body = im.data, content_type = "application/octet-stream")
 
 
