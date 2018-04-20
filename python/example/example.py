@@ -2,11 +2,13 @@
 import numpy as np
 import time
 import wdisp
+import PIL
 
 # Create random images
 im1 = np.random.rand(1024, 1024, 3)
 im2 = np.random.rand(1024, 1024)
 im3 = np.sin((np.arange(1024 * 1024) % 1024).reshape(1024, 1024) * 4 * np.pi / 1024)
+
 
 # Starts the server in a new thread. Requires your program to regularly release the GIL
 # so the server can run
