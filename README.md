@@ -5,7 +5,7 @@ Provides an imshow function which transfers an image to the included http server
 in a browser. Multiple images can be uploaded and viewed at the same time. The browser
 automatically refreshes the view if a new image is uploaded or changed. 
 
-## Exampe
+## Example
 ````
 # Starts the server in a new thread.
 wdisp.run_server_thread()
