@@ -154,13 +154,3 @@ def run_server_process(port = None, daemon = True):
     p.start()
     return p
 
-
-def run_app():
-    parser = argparse.ArgumentParser(description='Image Server')
-    parser.add_argument('--port', help = "Server port")
-    args = parser.parse_args()
-
-    run_server(port = args.port)
-
-if __name__ == "__main__":
-    run_app()
