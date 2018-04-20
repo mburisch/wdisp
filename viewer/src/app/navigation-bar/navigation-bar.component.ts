@@ -14,8 +14,4 @@ export class NavigationBarComponent implements OnInit {
   ngOnInit() {
   }
 
-  removeImages() {
-    this.imageService.deleteImages();
-  }
-
 }

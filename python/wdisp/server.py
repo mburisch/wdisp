@@ -6,10 +6,11 @@ import os.path
 import threading
 import multiprocessing
 import argparse
+import time
 
 
-import config
-from service import Image, ImageValues, ImageDB, Messages, MessageStream
+from . import config
+from .service import Image, ImageValues, ImageDB, Messages, MessageStream
 
 ImageNotFound = aiohttp.web.HTTPNotFound()
 
@@ -20,7 +21,7 @@ routes = aiohttp.web.RouteTableDef()
 def get_image(name):
     im = _db.get_image(name)
     if not im:
-        raise ImageNotFound(reason = "Image not available")
+        raise ImageNotFound
     return im
 
 
@@ -80,6 +81,28 @@ async def image_stream(request):
     return ws
 
 
+@routes.get("/api/wait/{time}")
+async def wait(request):
+    wait_time = int(request.match_info["time"])
+    if wait_time == 0:
+        wait_time = int(time.time())
+    for i in range(10):
+        if _db.is_wait_time_ready(wait_time):
+            return aiohttp.web.json_response({"ready": True})
+        else:
+            wait_time = int(time.time())
+
+        await asyncio.sleep(1)
+        
+    return aiohttp.web.json_response({"ready": False, "time": wait_time})
+
+
+@routes.post('/api/wait')
+def image(request):
+    _db.notify_wait_time()
+    return aiohttp.web.Response()
+
+
 @routes.get("/{path:.*}")
 async def index(request):
     # This route makes sure that unknown routes are mapped to index.html, so Angular can grab them"""
@@ -93,45 +116,51 @@ routes.static("/", config.wwwroot())
 
 
 
-def run_server(port = config.port()):
+def run_server(port = None):
     """Runs the server (blocking)"""
+
     global _db
     _db = ImageDB()
+
+    if not port:
+        port = config.port
+    else:
+        config.port = port
+
     app = aiohttp.web.Application()
     app.add_routes(routes)
-    aiohttp.web.run_app(app, port = config.port())
+    aiohttp.web.run_app(app, port = port, shutdown_timeout = 1, print = None)
 
 
 
-def run_server_thread(port = config.port()):
+def run_server_thread(port = None, daemon = True):
     """Runs the server in a new process"""
     def run():
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         run_server(port)
 
-    t = threading.Thread(target = run, daemon = True)
+    t = threading.Thread(target = run, daemon = daemon)
     t.start()
+    return t
 
 
-def run_server_process(port = config.port()):
-    """Runs the server in a new multiprocessing process"""
-    def run():
-        run_server(port)
-    p = multiprocessing.Process(target = run_server, daemon = True)
+def run_server_process(port = None, daemon = True):
+    """Runs the server in a multiprocessing process"""
+    if port:
+        config.port = port
+
+    p = multiprocessing.Process(target = run_server, args = (port,), daemon = daemon)
     p.start()
+    return p
 
 
 def run_app():
-    port = config.port()
-
     parser = argparse.ArgumentParser(description='Image Server')
     parser.add_argument('--port', help = "Server port")
     args = parser.parse_args()
-    if args.port:
-        port = args.port
 
-    run_server(port = port)
+    run_server(port = args.port)
 
 if __name__ == "__main__":
     run_app()

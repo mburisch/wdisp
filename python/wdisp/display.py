@@ -3,12 +3,15 @@ import urllib
 import json
 import numpy as np
 
-import config
-from service import Image, ImageValues
+from . import config
+from .service import Image, ImageValues
 
 def do_request(url, method, data = None):
-    urllib.request.urlopen(urllib.request.Request(url, data = data, method = method))
-
+    try:
+        return urllib.request.urlopen(urllib.request.Request(url, data = data, method = method))
+    except:
+        print("Error while showing image")
+    return None
 
 def value_range(dtype):
     if   dtype.name == "int8":    return (-128, 127)
@@ -39,6 +42,20 @@ def close(name):
 
 def close_all():
     do_request(config.url_for("/images"), method = "DELETE")
+
+
+def wait():
+    wait_time = 0
+    while True:
+        resp = do_request(config.url_for("/wait/" + str(wait_time)), method = "GET")
+        if resp is None:
+            return
+        msg = json.loads(resp.read())
+        if msg["ready"] == True:
+            return
+        else:
+            time = msg["time"]
+
 
 
 def create_test_images():

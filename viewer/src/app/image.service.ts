@@ -111,6 +111,10 @@ export class ImageService {
   }
 
 
+  async continueExecution() {
+    await this.http.post(this.baseUrl + "/wait", {}).toPromise();
+  }
+
   getImage(name: string): Observable<Image> {
     const func = info => {
       if (info)

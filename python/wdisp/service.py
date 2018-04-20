@@ -6,7 +6,7 @@ import datetime
 import numpy as np
 import PIL.Image
 import io
-
+import time
 
 
 def _make_preview(image, vmin, vmax, preview_size = (128, 128)):
@@ -100,6 +100,9 @@ class ImageDB(object):
         self._id = 0
         self.images = {}
         self.observer = []
+        self.wait_time = 0
+
+        self.notify_wait_time()
 
     def add_image(self, image):
         image.id = self._next_id()
@@ -125,6 +128,11 @@ class ImageDB(object):
         self._id += 1
         return self._id
 
+    def notify_wait_time(self):
+        self.wait_time = time.time()
+
+    def is_wait_time_ready(self, time):
+        return self.wait_time > time
 
     def add_observer(self, f):
         self.observer.append(f)
