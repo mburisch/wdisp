@@ -1,0 +1,11 @@
+<!--<div class="d-flex flex-column flex-grow h-100 image-container">
+  <div class="h-100 flex-grow fullscreen">
+<canvas #canvas width="400" height="400"></canvas>
+  </div>
+</div>
+-->
+
+<div class="image-container">
+  <canvas #canvas appCanvasResize (resize)="drawImage()" ></canvas>
+</div>
+

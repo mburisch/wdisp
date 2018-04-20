@@ -1,0 +1,19 @@
+<nav class="navbar navbar-expand-sm navbar-light bg-light">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-item nav-link" routerLink="/images">Overview</a>
+
+      <div class="nav-item" ngbDropdown>
+        <a class="nav-link" ngbDropdownToggle>Image</a>
+        <div ngbDropdownMenu>
+          <a class="dropdown-item" *ngFor="let image of imageService.images$ | async" routerLink="/image/{{image.name}}" routerLinkActive="active-link">{{image.name}}</a>
+        </div>
+      </div>
+
+      <a class="nav-item nav-link" href="javascript:void(0)" (click)="removeImages()">Remove Images</a>
+    </div>
+  </div>
+</nav>

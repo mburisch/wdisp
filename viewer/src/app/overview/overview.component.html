@@ -1,0 +1,16 @@
+<div class="d-flex flex-wrap">
+  <div *ngFor="let image of imageService.images$ | async" class="card m-2" style="width: 14rem;">
+    <a routerLink="/image/{{image.name}}">
+      <img class="card-img-top" src="{{previewUrl(image)}}" />
+    </a>
+    <div class="card-body">
+      <h5 class="card-title">{{image.name}}</h5>
+      <h6 class="card-subtitle  text-muted">{{image.width}}x{{image.height}}x{{image.channels}}</h6>
+      <small class="text-muted">Created: {{image.time.toLocaleTimeString()}}</small>
+    </div>
+    <div class="card-footer">
+      <button type="button" class="btn btn-danger btn-sm" (click)="deleteImage(image)">Delete</button>
+    </div>
+  </div>
+</div>
+
