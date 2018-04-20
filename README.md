@@ -18,6 +18,9 @@ wdisp.imshow("image2", im2, vmin = -1, vmax = 1)
 wdisp.wait()
 ````
 
+![Image overview](https://github.com/mgb4/wdisp/blob/master/doc/overview.jpg)
+![Image view](https://github.com/mgb4/wdisp/blob/master/doc/image.jpg)
+
 ## Server
 The server can be run either with a blocking call, in new thread or in a new process. 
 ````
