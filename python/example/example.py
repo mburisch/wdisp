@@ -2,7 +2,6 @@
 import numpy as np
 import time
 import wdisp
-import PIL
 
 # Create random images
 im1 = np.random.rand(1024, 1024, 3)

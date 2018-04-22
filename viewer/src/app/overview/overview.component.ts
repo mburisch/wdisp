@@ -20,7 +20,7 @@ export class OverviewComponent implements OnInit {
   }
 
   previewUrl(image: ImageInfo): string {
-    return this.imageService.baseUrl + "/preview/" + image.name;
+    return this.imageService.baseUrl + "/preview/" + image.name + "?" + image.time.getTime();
   }
 
   deleteImage(image: ImageInfo) {
