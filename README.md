@@ -39,13 +39,13 @@ if __name__ == "__main__":
 ````
 Refer to the documentation of the multiprocessing library for more details about this.
 
-As a last option the server can also be run from the command line using the app.py script.
+As a last option the server can also be run from the command line.
 ````
-python app.py
+python -m wdisp
 ````
 or with specifying the port
 ````
-python app.py --port 1000
+python -m wdisp --port 1000
 ````
 
 ## Functions
