@@ -5,7 +5,7 @@ long_description = "An imshow showing the images in a browser."
 	
 setup(
     name = "wdisp",
-    version = "1.0.0",
+    version = "1.0.1",
     description = "imshow for a browser",
     long_description = long_description, 
 
