@@ -30,7 +30,7 @@ setup(
 
     python_requires = ">=3.4",
 	
-    install_requires = ["numpy", "PIL"],
+    install_requires = ["numpy"],
     extras_require = {
         "Server": ["aiohttp"]
     }
